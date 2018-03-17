@@ -28,7 +28,7 @@ $(function(){
             }
         });
     var fetch = function() {
-        $.get('http://' + STOKER_IP + '/stoker.json').success(function(resp){
+        $.get('http://' + STOKER_IP + '/stoker.json', {}, null, 'jsonp').success(function(resp){
             $.each(resp.stoker.sensors, function(i, sensor){
                 if (!datasetMap[sensor.name]) {
                     datasetMap[sensor.name] = {label: sensor.name, data: [], borderColor: getcolor()};
