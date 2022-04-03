@@ -1,4 +1,4 @@
-var STOKER_IP = '192.168.1.1';
+var STOKER_IP = new URLSearchParams(window.location.search).get("ip") || '192.168.1.1';
 
 function getcolor() {
     var letters = '0123456789ABCDEF'.split('');
@@ -28,7 +28,10 @@ $(function(){
             }
         });
     var fetch = function() {
-        $.get('http://' + STOKER_IP + '/stoker.json', {}, null, 'jsonp').success(function(resp){
+        const url = 'http://' + STOKER_IP + '/stoker.json'
+        $.get(url, {}, null, 'jsonp').fail(function(){
+            console.error(`Could not reach ${url}, make sure IP is correct e.g., index.html?ip=192.168.1.xxx`);
+        }).success(function(resp){
             $.each(resp.stoker.sensors, function(i, sensor){
                 if (!datasetMap[sensor.name]) {
                     datasetMap[sensor.name] = {label: sensor.name, data: [], borderColor: getcolor()};
